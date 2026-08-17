@@ -106,6 +106,7 @@ doing real work.
 
 ```bash
 python3 labs/ch04_parameters.py
+python3 labs/ch04_parameters.py --n-embd 32 --n-layer 2   # explore: any model shape
 ```
 
 Prints the full matrix census with roles, shows how the count scales as you widen

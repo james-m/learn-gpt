@@ -1,23 +1,33 @@
 """Lab 03 — Autograd II: backward() (chapters/ch03-autograd-backward.md)
 
-Run:  python3 labs/ch03_backward.py
+Run:      python3 labs/ch03_backward.py
+Explore:  python3 labs/ch03_backward.py 5 -1       # your own x, y in w = x*y + x
 
 What to look for:
   * the topological sort: children always come before parents in `topo`,
     so walking it in reverse visits every node AFTER the nodes that depend on it
   * gradients ACCUMULATE with += — crucial when a value is used more than once
 """
+import argparse
 from common import Value
+
+parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+parser.add_argument('values', nargs='*', type=float, default=[3.0, 2.0],
+                    metavar='X Y', help="leaf values for w = x*y + x (default: 3 2)")
+args = parser.parse_args()
+if len(args.values) != 2:
+    parser.error("give exactly two numbers: x y")
+xv, yv = args.values
 
 # Give nodes names so we can print the topo order readably.
 def show(name_map, v):
     return name_map.get(id(v), f"<tmp {v.data:.3g}>")
 
 # --- 1. watch the topological sort happen ----------------------------------
-x = Value(3.0)
-y = Value(2.0)
-u = x * y          # u = 6
-w = u + x          # w = 9   <-- note: x is used TWICE (in u and directly in w)
+x = Value(xv)
+y = Value(yv)
+u = x * y
+w = u + x          # note: x is used TWICE (in u and directly in w)
 
 names = {id(x): 'x', id(y): 'y', id(u): 'u=x*y', id(w): 'w=u+x'}
 
@@ -30,18 +40,19 @@ def build_topo(v):
         topo.append(v)
 build_topo(w)
 
-print("topological order (children before parents):")
+print(f"w = x*y + x  with x={xv}, y={yv}  ->  w = {w.data}")
+print("\ntopological order (children before parents):")
 print("  " + "  ->  ".join(show(names, v) for v in topo))
 print("backward() walks this list in REVERSE, so by the time it reaches a node,")
 print("that node's .grad is already fully summed up from everything above it.\n")
 
 # --- 2. gradient accumulation: why `child.grad += ...` uses += -------------
 w.backward()
-# w = x*y + x, so dw/dx = y + 1 = 3. The two 'routes' x takes to reach w
+# w = x*y + x, so dw/dx = y + 1. The two 'routes' x takes to reach w
 # (through u, and directly) each contribute, and += adds them together.
-print(f"dw/dx = {x.grad}   (= y + 1: one contribution of y=2 through u, plus 1 directly)")
-print(f"dw/dy = {y.grad}   (= x = 3)")
-assert x.grad == 3.0 and y.grad == 3.0
+print(f"dw/dx = {x.grad}   (= y + 1 = {yv + 1}: a contribution of y through u, plus 1 directly)")
+print(f"dw/dy = {y.grad}   (= x = {xv})")
+assert x.grad == yv + 1 and y.grad == xv
 
 # --- 3. what would go wrong with plain assignment --------------------------
 # Simulate backward() with `=` instead of `+=`:

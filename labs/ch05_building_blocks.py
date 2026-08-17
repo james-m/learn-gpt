@@ -1,6 +1,8 @@
 """Lab 05 — Building blocks: linear, softmax, rmsnorm (chapters/ch05-building-blocks.md)
 
-Run:  python3 labs/ch05_building_blocks.py
+Run:      python3 labs/ch05_building_blocks.py
+Explore:  python3 labs/ch05_building_blocks.py 4 4 0     # your own logits for the
+          softmax section (any count, any values — try ties, try huge gaps)
 
 What to look for:
   * linear() is just rows of weighted sums (a matrix-vector multiply)
@@ -8,8 +10,16 @@ What to look for:
     mathematically but prevents exp() from overflowing
   * rmsnorm rescales a vector to a standard "loudness" without changing its direction
 """
+import argparse
 import math
 from common import Value, linear, softmax, rmsnorm, bar
+
+parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+parser.add_argument('logits', nargs='*', type=float, default=[2.0, 1.0, 0.1],
+                    help="logits for the softmax demos (default: 2.0 1.0 0.1)")
+args = parser.parse_args()
+if len(args.logits) < 2:
+    parser.error("give at least two logits")
 
 # --- linear ---------------------------------------------------------------
 x = [Value(1.0), Value(2.0)]
@@ -23,16 +33,17 @@ for i, o in enumerate(out):
 print("each output is one learned 'weighted opinion' about the input vector\n")
 
 # --- softmax --------------------------------------------------------------
-logits = [Value(2.0), Value(1.0), Value(0.1)]
+raw = args.logits
+logits = [Value(v) for v in raw]
 probs = softmax(logits)
-print("softmax([2.0, 1.0, 0.1]):")
+print(f"softmax({raw}):")
 for l, p in zip(logits, probs):
-    print(f"  logit {l.data:+.1f} -> prob {p.data:.3f}  {bar(p.data)}")
+    print(f"  logit {l.data:+.2f} -> prob {p.data:.3f}  {bar(p.data)}")
 print(f"  sum of probs = {sum(p.data for p in probs):.6f} (always exactly 1)\n")
 
 # shifting ALL logits by a constant changes nothing:
 shifted = softmax([l + 100 for l in logits])
-print("softmax([102.0, 101.0, 100.1]) — same gaps, same answer:")
+print(f"softmax({[round(v + 100, 2) for v in raw]}) — same gaps, same answer:")
 print("  " + ", ".join(f"{p.data:.3f}" for p in shifted))
 
 # ...which is exactly why the max-subtraction trick is safe. And necessary:

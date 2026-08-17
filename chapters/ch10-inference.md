@@ -110,7 +110,8 @@ understood, every line of a working GPT.
 ## Lab
 
 ```bash
-python3 labs/ch10_sampling.py    # trains ~300 steps first; about a minute
+python3 labs/ch10_sampling.py                        # trains ~300 steps first; about a minute
+python3 labs/ch10_sampling.py --temps 0.01 3.0       # explore: your own temperature ladder
 ```
 
 Dissects one generation step (the actual top-5 first-letter picks with their

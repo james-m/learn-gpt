@@ -140,7 +140,8 @@ transformers both stronger and vastly more parallelizable than what preceded the
 ## Lab
 
 ```bash
-python3 labs/ch06_attention.py    # trains ~200 steps first; about a minute
+python3 labs/ch06_attention.py                     # trains ~200 steps first; about a minute
+python3 labs/ch06_attention.py sophia --steps 500  # explore: any word, any budget
 ```
 
 Prints real attention matrices for `'emma'` — untrained (nearly uniform rows: no

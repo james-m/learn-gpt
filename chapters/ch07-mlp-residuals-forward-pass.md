@@ -106,6 +106,7 @@ position ─→ wpe ┘        ↑residual────────────�
 
 ```bash
 python3 labs/ch07_forward_trace.py
+python3 labs/ch07_forward_trace.py z --pos 7    # explore: any char, any position
 ```
 
 Pushes one token through the entire forward pass with a printout at every stage:

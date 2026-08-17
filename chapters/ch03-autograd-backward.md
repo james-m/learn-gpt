@@ -89,6 +89,7 @@ computationally feasible at all.
 
 ```bash
 python3 labs/ch03_backward.py
+python3 labs/ch03_backward.py 5 -1    # explore: your own x y
 ```
 
 Builds `w = x*y + x` (note `x` used twice), prints the actual topological order, shows

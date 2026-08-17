@@ -1,19 +1,26 @@
 """Lab 09 — The training loop (chapters/ch09-training-loop.md)
 
-Run:  python3 labs/ch09_training.py          (Adam, the default — ~1 min)
-      python3 labs/ch09_training.py --sgd    (plain SGD for comparison)
+Run:      python3 labs/ch09_training.py          (Adam, the default — ~1 min)
+          python3 labs/ch09_training.py --sgd    (plain SGD for comparison)
+Explore:  python3 labs/ch09_training.py --lr 1.0 --steps 100    # learning-rate safari
+          python3 labs/ch09_training.py --sgd --lr 0.0001       # watch nothing happen
 
 What to look for:
   * the loss curve: noisy (each step sees ONE name) but trending down
   * Adam vs SGD: same gradients, different update rule — Adam adapts a
     per-parameter step size and gets moving much faster here
 """
-import sys
+import argparse
 import random
 from common import load_names, build_vocab, init_model, train, bar
 
-optimizer = 'sgd' if '--sgd' in sys.argv else 'adam'
-NUM_STEPS = 240
+parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+parser.add_argument('--sgd', action='store_true', help="plain SGD instead of Adam")
+parser.add_argument('--steps', type=int, default=240, help="training steps (default 240)")
+parser.add_argument('--lr', type=float, default=0.01, help="learning rate (default 0.01)")
+args = parser.parse_args()
+optimizer = 'sgd' if args.sgd else 'adam'
+NUM_STEPS = args.steps
 
 random.seed(42)
 docs = load_names()
@@ -21,9 +28,16 @@ random.shuffle(docs)
 uchars, BOS, vocab_size = build_vocab(docs)
 model = init_model(vocab_size)
 
-print(f"training {NUM_STEPS} steps with {optimizer.upper()}...")
-losses = train(model, docs, uchars, BOS, num_steps=NUM_STEPS, optimizer=optimizer,
-               on_step=lambda s, l: print(f"  step {s+1:3d} | loss {l:.3f}", end='\r'))
+print(f"training {NUM_STEPS} steps with {optimizer.upper()}, lr={args.lr}...")
+try:
+    losses = train(model, docs, uchars, BOS, num_steps=NUM_STEPS, optimizer=optimizer,
+                   learning_rate=args.lr,
+                   on_step=lambda s, l: print(f"  step {s+1:3d} | loss {l:.3f}", end='\r'))
+except (OverflowError, ValueError) as e:
+    print(f"\ntraining EXPLODED: {type(e).__name__}: {e}")
+    print("congratulations, you've found a too-large learning rate — the parameters")
+    print("swung so hard the math left its safe domain (ch 9, exercise 1).")
+    raise SystemExit(0)
 print()
 
 # --- ASCII loss curve: average each bucket of 20 steps ---------------------

@@ -114,6 +114,7 @@ biases, with LayerNorm→RMSNorm and GeLU→ReLU. Cosmetic differences; same mac
 
 ```bash
 python3 labs/ch05_building_blocks.py
+python3 labs/ch05_building_blocks.py 4 4 0    # explore: your own softmax logits
 ```
 
 Hand-crafted `linear` rows (an averager, a differencer), softmax with bars, proof of

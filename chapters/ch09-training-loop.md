@@ -132,6 +132,7 @@ thousands of GPUs.
 ```bash
 python3 labs/ch09_training.py          # Adam
 python3 labs/ch09_training.py --sgd    # same everything, dumber update rule
+python3 labs/ch09_training.py --lr 1.0 --steps 100   # explore: exercise 1's safari
 ```
 
 240 steps, ASCII loss curve bucketed by 20s. Run both and put the curves side by

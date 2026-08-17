@@ -1,6 +1,7 @@
 """Lab 07 — The full forward pass (chapters/ch07-mlp-residuals-forward-pass.md)
 
-Run:  python3 labs/ch07_forward_trace.py
+Run:      python3 labs/ch07_forward_trace.py
+Explore:  python3 labs/ch07_forward_trace.py z --pos 7    # trace any char at any position
 
 What to look for:
   * one token goes in as an id, comes out as vocab_size scores (logits)
@@ -8,13 +9,24 @@ What to look for:
     4x expansion inside the MLP and the final projection to vocab size
   * residual connections: the block's output is 'input + adjustment'
 """
+import argparse
 import math
 from common import load_names, build_vocab, init_model, linear, softmax, rmsnorm
+
+parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+parser.add_argument('char', nargs='?', default='e', help="single character to trace (default: e)")
+parser.add_argument('--pos', type=int, default=1, help="position id to trace it at (default 1)")
+args = parser.parse_args()
 
 docs = load_names()
 uchars, BOS, vocab_size = build_vocab(docs)
 model = init_model(vocab_size)
 sd = model['state_dict']
+
+if len(args.char) != 1 or args.char not in uchars:
+    parser.error(f"{args.char!r} must be a single in-vocab character ({''.join(uchars)})")
+if not 0 <= args.pos < model['block_size']:
+    parser.error(f"--pos must be in 0..{model['block_size']-1}: wpe has exactly block_size rows (ch 4)")
 
 def stats(x):
     d = [v.data for v in x]
@@ -22,11 +34,11 @@ def stats(x):
     return f"len={len(d):<3} rms={rms:6.3f}  first3=[{', '.join(f'{v:+.2f}' for v in d[:3])} ...]"
 
 # This is microgpt.py's gpt() (lines 108-144) with a print after every stage.
-token_id, pos_id = uchars.index('e'), 1   # pretend 'e' arrives at position 1
+token_id, pos_id = uchars.index(args.char), args.pos
 keys, values = [[] for _ in range(model['n_layer'])], [[] for _ in range(model['n_layer'])]
 n_head, head_dim = model['n_head'], model['head_dim']
 
-print(f"input: token 'e' (id {token_id}) at position {pos_id}\n")
+print(f"input: token {args.char!r} (id {token_id}) at position {pos_id}\n")
 tok_emb = sd['wte'][token_id]
 pos_emb = sd['wpe'][pos_id]
 print(f"token embedding      {stats(tok_emb)}")

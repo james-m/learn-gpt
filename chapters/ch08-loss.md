@@ -106,7 +106,8 @@ the softmax lives.
 ## Lab
 
 ```bash
-python3 labs/ch08_loss.py    # trains ~150 steps midway; under a minute
+python3 labs/ch08_loss.py                    # trains ~150 steps midway; under a minute
+python3 labs/ch08_loss.py 0.99 0.001         # explore: your own p's for the -log table
 ```
 
 The -log(p) feel-table, then the punchline: an untrained model's measured average loss

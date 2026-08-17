@@ -53,6 +53,9 @@ Slash commands: `/learn` (teach the next/chosen chapter interactively), `/quiz [
 
 - Labs and solutions must stay dependency-free (pure Python stdlib) and runnable
   from the repo root or their own directory.
+- Every lab takes optional argparse args for exploration; running with **no args
+  must always reproduce the documented walkthrough output**. When teaching, point
+  the student at the exploration flags (each lab's docstring shows examples).
 - `microgpt.py` stays byte-identical to the upstream gist — never edit it. If a
   demonstration needs modified model code, copy into `labs/` (as `common.py` does).
 - Training runs in labs are deliberately short (≤ ~300 steps); keep new ones the

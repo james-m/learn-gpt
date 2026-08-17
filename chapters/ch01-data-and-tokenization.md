@@ -91,11 +91,14 @@ table. Character-level is the honest, simple end of the same spectrum.
 
 ```bash
 python3 labs/ch01_tokenizer.py
+python3 labs/ch01_tokenizer.py <any-name>    # explore: your own input
 ```
 
 Watch the encode/decode round trip, then the exact `(input → target)` pairs the model
 will train on for `'emma'` — including both BOS roles. Chapter 8's loss is computed
-on precisely these pairs.
+on precisely these pairs. Then pass your own name: one that's not in the dataset
+(`karpathy`), and one with a character the vocab can't hold (`émma`) — the second is
+exercise 3, live.
 
 ## Exercises
 
@@ -106,7 +109,8 @@ on precisely these pairs.
    about `q` — it barely ever sees one.)
 3. **Break it:** What happens at `uchars.index(ch)` if a name contained a character
    that wasn't in the training data — say `'émma'`? Why can this never happen in
-   microgpt as written? (Look at how `uchars` is built.)
+   microgpt as written? (Look at how `uchars` is built. Then probe it for real:
+   `python3 labs/ch01_tokenizer.py émma`.)
 
 Solutions: `solutions/ch01_solutions.py`
 

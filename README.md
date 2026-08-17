@@ -71,6 +71,11 @@ CLAUDE.md          tutor instructions for Claude Code
 Everything runs on the Python standard library alone — no venv, no pip, nothing to
 install. Labs that train do so for ≤300 steps and finish in about a minute.
 
+Every lab also takes **optional arguments for exploration** — run with no args for
+the documented walkthrough, or pass `-h` to see what you can poke (tokenize your own
+name, pick your own softmax logits, change the training budget, sweep your own
+temperatures, blow up the learning rate on purpose...).
+
 ## What's next, after chapter 10
 
 - [Neural Networks: Zero to Hero](https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ)

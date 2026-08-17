@@ -111,6 +111,7 @@ speed. That asymmetry is the "everything else is just efficiency" from the docst
 
 ```bash
 python3 labs/ch02_value.py
+python3 labs/ch02_value.py 2 -3 1    # explore: your own a b c (these shut the relu gate)
 ```
 
 Builds `L = (a*b + c).relu()`, prints what each node recorded, runs `backward()`
