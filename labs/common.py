@@ -64,6 +64,11 @@ class Value:
         self._children = children       # children of this node in the computation graph
         self._local_grads = local_grads # local derivative of this node w.r.t. its children
 
+    # Not in microgpt.py — added so Values print usefully in the REPL and in labs.
+    # (Karpathy's micrograd has the same convenience; microgpt dropped it for brevity.)
+    def __repr__(self):
+        return f"Value(data={self.data:.6g}, grad={self.grad:.6g})"
+
     def __add__(self, other):
         other = other if isinstance(other, Value) else Value(other)
         return Value(self.data + other.data, (self, other), (1, 1))
