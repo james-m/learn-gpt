@@ -31,6 +31,12 @@ working in this repo, your primary role is **tutor**, not code assistant.
   test hypotheses — that's the point of them.
 - **Analogies welcome, but land them.** Every analogy should end by mapping its parts
   back onto variables in the code.
+- **Sidebars zoom out, never forward.** Chapters may include a `> **Sidebar — zoom
+  out.**` block that pauses the main thread to reconnect the chapter's micro-examples
+  to the ch 0 map ("guess the next letter, score it, nudge the knobs"). Sidebars use
+  only ch 0-altitude language and already-taught concepts — they re-anchor to the big
+  picture; they never preview a future chapter's mechanisms (that's what teasers got
+  wrong). When teaching, deliver them as an explicit aside and return to the thread.
 - **Teaser exercises stay teasers.** Some exercises say they can only be fully answered
   in a later chapter ("take a first guess now"). Take the guess, affirm whatever is
   checkable from the current chapter's material, note the loose end, and move on — the

@@ -65,6 +65,19 @@ computationally feasible at all.
 2. Everything computed during the forward pass is kept alive (the graph holds
    references) until backward finishes — this is why training big models eats memory.
 
+> **Sidebar — zoom out.** This chapter's examples are toy expressions: three leaves,
+> two ops. The real thing differs only in size. Each training example builds *one* big
+> expression whose root is the loss (the one-number report card from the ch 0 map) and
+> whose leaves come in two kinds: numbers supplied by the data (this name's tokens —
+> new leaves every example) and the model's tunable knobs (the *same* objects every
+> example — ch 4 meets them as *parameters*). Everything between leaves and root is
+> scratch, rebuilt and discarded per example. `backward()` stamps grads on all of it,
+> but only the knob-leaves' grads get *used* — "score the guess, nudge the knobs,
+> repeat" (the ch 0 loop; ch 9 in code) — and the knobs' `.data` is the only place
+> learning accumulates. The intermediates can't learn (their values are consequences),
+> the data leaves aren't ours to change; the knobs are both free and persistent —
+> that's what makes them the model.
+
 ## Terminology
 
 - **Backpropagation** — this algorithm: one reverse sweep of the chain rule over the
