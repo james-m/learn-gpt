@@ -35,7 +35,8 @@ assert a2.grad == 16 and b2.grad == 6
 # build_topo recursion goes as deep as the LONGEST child-chain in the graph. Within
 # one position's forward pass the long chains are things like softmax's `total`
 # (a chain of 27 nested __add__ nodes from sum()) or a linear()'s 16-term sum —
-# tens of nodes, not thousands. The graph is enormously WIDE (4192 params feed in)
+# tens of nodes, not thousands. The graph is enormously WIDE (thousands of parameters
+# — ch 4 counts them — feed in)
 # but only modestly DEEP per position...
 # ...except the chains COMPOUND across positions: position t's x depends on cached
 # keys/values from all earlier positions, and the final loss sums all positions.

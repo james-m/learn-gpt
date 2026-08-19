@@ -5,9 +5,9 @@
 The most important 40 lines in the file. `Value` wraps a single Python float and
 overloads its arithmetic so that *doing math secretly records the math* — building a
 graph of what depended on what. That recording is what makes training possible: it's
-how the model will later answer "which of my 4,192 parameters made the loss worse, and
-by how much?" This chapter covers the recording (the *forward pass*); chapter 3 covers
-the playback (`backward()`).
+how the model will later answer "which of the thousands of numbers inside me (ch 4
+meets them as *parameters*) made things worse, and by how much?" This chapter covers
+the recording (the *forward pass*); chapter 3 covers the playback (`backward()`).
 
 **Covers:** `microgpt.py:29-57`
 

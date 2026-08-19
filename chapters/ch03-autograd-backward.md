@@ -5,8 +5,9 @@
 Chapter 2 recorded the computation graph; this chapter plays it back. `backward()` is
 backpropagation in 14 lines: starting from the final node (in training, the loss), it
 walks the graph once and stamps every node with `grad` — *"if this number had been a
-tiny bit bigger, the loss would have changed by this much."* For the 4,192 parameters,
-that's the exact information needed to improve them.
+tiny bit bigger, the loss would have changed by this much."* Among those nodes are the
+model's thousands of tunable knobs — chapter 4 meets them as *parameters* — and their
+grads are exactly what training (ch 9) will run on.
 
 **Covers:** `microgpt.py:59-72`
 
@@ -53,7 +54,7 @@ after all its *parents* have contributed to it. One linear sweep, every gradient
 No iteration, no convergence, no approximation.
 
 **Cost intuition:** the backward sweep touches each graph edge once, doing one
-multiply-add — so getting all 4,192 gradients costs about the same as one forward
+multiply-add — so getting *every node's* gradient costs about the same as one forward
 pass. This near-free-ness (formally ~2× forward cost) is *the* reason deep learning is
 computationally feasible at all.
 
@@ -74,15 +75,16 @@ computationally feasible at all.
   — short, precise, uses these exact ideas.
 - **Chain rule** — derivatives multiply along a chain of dependencies.
   [Wikipedia](https://en.wikipedia.org/wiki/Chain_rule)
-- **Gradient** — the collection of all these derivatives, one per parameter; "the
-  direction that increases the loss fastest." Descending it is ch 9's job.
+- **Gradient** — the collection of all these derivatives, one per tunable knob
+  (ch 4 names these *parameters*); "the direction that increases the loss fastest."
+  Descending it is ch 9's job.
   [Wikipedia](https://en.wikipedia.org/wiki/Gradient)
 - **Topological sort** — ordering a dependency graph so every node comes after the
   things it depends on. Same idea as `make`, import resolution, or spreadsheet
   recalculation. [Wikipedia](https://en.wikipedia.org/wiki/Topological_sorting)
 - **Reverse-mode vs. forward-mode AD** — going loss→inputs (as here) gets *all* input
-  gradients in one sweep; the alternative direction would need one sweep *per
-  parameter*. 4,192 sweeps vs. 1 — that's the whole argument.
+  gradients in one sweep; the alternative direction would need one sweep *per input*.
+  Thousands of sweeps vs. 1 — that's the whole argument.
   [Wikipedia](https://en.wikipedia.org/wiki/Automatic_differentiation#Reverse_accumulation)
 
 ## Lab
