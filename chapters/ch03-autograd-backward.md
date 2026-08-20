@@ -1,3 +1,14 @@
+<!-- Instructor notes (tutor-only; students read the rendered text below).
+Spine — verify each of these with a check question:
+  1. Effects multiply along a path: child.grad += local_grad * v.grad (:72).
+  2. Paths add — the +=; value reuse is the norm, not an edge case.
+  3. One reverse sweep = every node's gradient, exact, ~cost of one forward pass.
+  4. Grads are never reset here; the training loop must zero them (:182).
+Enrichment — offer, don't assign:
+  - Why topo order: "a node finishes receiving blame before handing it down" is the
+    full need-to-know; tracing what a wrong order produces is a dig.
+  - Exercise 3 (recursion depth) is the deepest cut; fine to defer entirely.
+-->
 # Chapter 3 — Autograd II: `backward()`
 
 ## Where we are
