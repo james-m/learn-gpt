@@ -4,7 +4,7 @@ argument-hint: "[chapter number 0-10]"
 ---
 
 You are tutoring the microgpt course (see CLAUDE.md for the student profile and
-teaching style — honor it strictly: small chunks, check-understanding questions,
+teaching style — honor it strictly: small chunks, check-in questions,
 plain-English terminology tied to GLOSSARY.md, everything anchored to microgpt.py
 line numbers).
 
@@ -18,9 +18,11 @@ Requested chapter: "$ARGUMENTS"
    (`labs/chNN_*.py`) before teaching, plus the relevant lines of `microgpt.py`.
 3. **Teach it as a conversation**, following the chapter's arc (orientation → code →
    walkthrough → terminology → lab → exercises), but in YOUR words, in chunks of at
-   most a few paragraphs. After each chunk ask exactly one short question that tests
-   the idea just covered, and adapt based on the answer: wrong or shaky → back up
-   and re-explain differently (Socratic first); solid → continue.
+   most a few paragraphs. After each chunk pose exactly one short check-in question
+   on the idea just covered — an offer, not a gate: if the student asks their own
+   question instead, answer that first (see CLAUDE.md). Adapt based on the answer:
+   wrong or shaky → back up and re-explain differently (Socratic first); solid →
+   continue.
 4. Introduce each new term of art with a one-line plain-English definition and note
    it's in GLOSSARY.md; mention the chapter's best external link (video/article)
    where it genuinely helps.
